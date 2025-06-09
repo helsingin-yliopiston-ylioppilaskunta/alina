@@ -1,0 +1,33 @@
+services:
+  backend:
+    build: ./backend
+    volumes:
+      - ./backend:/app
+    expose:
+      - "8000"
+    environment:
+      - PYTHONUNBUFFERED=1
+
+  frontend:
+    build:
+      context: ./frontend
+    image: alina-frontend:build
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+    environment:
+      - VITE_API_BASE=/api
+    depends_on:
+      - backend
+    ports:
+      - "5137:5137"
+
+  nginx:
+    build:
+      context: ./nginx
+    ports:
+      - "3000:3000"
+    depends_on:
+      - frontend
+      - backend
+

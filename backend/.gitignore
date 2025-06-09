@@ -1,0 +1,45 @@
+# Bytecode files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# SQLite DB
+*.sqlite3
+*.db
+*.db-journal
+
+# Python virtual environments
+venv/
+env/
+.venv/
+
+# VSCode / IDEs
+.vscode/
+.idea/
+*.swp
+
+# Logs and temp
+*.log
+*.tmp
+
+# Migrations (if using Alembic and want to regenerate)
+alembic/versions/
+
+# Coverage/test
+.coverage
+coverage.xml
+htmlcov/
+.pytest_cache/
+.tox/
+
+# Local settings
+.env
+.env.*
+
+# Docker-related
+*.pid
+*.sock
+
+# MacOS
+.DS_Store
+
