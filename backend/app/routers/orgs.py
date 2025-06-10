@@ -18,14 +18,14 @@ router = APIRouter(
 SessionDep = Annotated[Session, Depends(get_session)]
 
 
-@router.get("/orgs/", response_model=Sequence[OrgPublic])
+@router.get("/", response_model=Sequence[OrgPublic])
 async def read_orgs(session: SessionDep):
     orgs: Sequence[Org] = session.exec(select(Org)).all()
 
     return orgs
 
 
-@router.get("/orgs/{org_id}", response_model=OrgPublic)
+@router.get("/{org_id}", response_model=OrgPublic)
 async def read_org(
     org_id: int,
     session: SessionDep,
@@ -37,7 +37,7 @@ async def read_org(
     return org
 
 
-@router.post("/orgs/", response_model=OrgPublic)
+@router.post("/", response_model=OrgPublic)
 async def create_org(org: OrgCreate, session: SessionDep):
     db_org = Org.model_validate(org)
     session.add(db_org)
@@ -47,7 +47,7 @@ async def create_org(org: OrgCreate, session: SessionDep):
     return db_org
 
 
-@router.patch("/orgs/{org_id}", response_model=OrgPublic)
+@router.patch("/{org_id}", response_model=OrgPublic)
 def update_org(org_id: int, org: OrgUpdate, session: SessionDep):
     org_db = session.get(Org, org_id)
     if not org_db:
@@ -63,7 +63,7 @@ def update_org(org_id: int, org: OrgUpdate, session: SessionDep):
     return org_db
 
 
-@router.delete("/orgs/{org_id}")
+@router.delete("/{org_id}")
 async def delete_org(org_id: int, session: SessionDep):
     org = session.get(Org, org_id)
     if not org:
