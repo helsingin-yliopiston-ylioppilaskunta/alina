@@ -53,3 +53,14 @@ h1 {
     font-size: 3rem;
     line-height: 1.1;
 }
+
+h3 {
+    font-size: 1.5rem;
+    line-height: 1.1;
+    margin-bottom: var(--gap-s);
+}
+
+ul {
+    list-style-type: none;
+    padding: 0;
+}
