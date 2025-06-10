@@ -5,6 +5,7 @@ from typing import TYPE_CHECKING, Optional
 if TYPE_CHECKING:
     from app.models.org import Org
     from app.models.resource import Resource
+    from app.models.date import Date
 
 
 class RequestBase(SQLModel):
@@ -23,12 +24,14 @@ class Request(RequestBase, table=True):
     id: int | None = Field(default=None, primary_key=True)
     org: Optional["Org"] = Relationship(back_populates="requests")
     resource: Optional["Resource"] = Relationship(back_populates="requests")
+    dates: list["Date"] = Relationship(back_populates="request")
 
 
 class RequestPublic(RequestBase):
     id: int
     org: Optional["Org"]
     resource: Optional["Resource"]
+    dates: list["Date"]
 
 
 class RequestCreate(RequestBase):
@@ -41,6 +44,7 @@ class RequestUpdate(RequestBase):
 
 from app.models.org import Org
 from app.models.resource import Resource
+from app.models.date import Date
 
 _ = Request.model_rebuild()
 _ = RequestPublic.model_rebuild()
