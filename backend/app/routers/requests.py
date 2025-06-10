@@ -1,11 +1,15 @@
 from fastapi import APIRouter, Depends, HTTPException
 
 from collections.abc import Sequence
+from pydantic import BaseModel
 from sqlmodel import Session, select
 
 from ..dependencies import get_session
 
 from app.models.request import Request, RequestPublic, RequestCreate, RequestUpdate
+
+from app.models.org import Org
+from app.models.date import Date
 
 from typing import Annotated
 
@@ -73,3 +77,58 @@ async def delete_request(request_id: int, session: SessionDep):
     session.commit()
 
     return {"ok", True}
+
+
+class ApplicationRow(BaseModel):
+    org_name: str
+    alina_dates: list[str]
+    sivistys_dates: list[str]
+    contact_person: str
+    contact_email: str
+    contact_phone: str
+    event: str
+    description: str
+    participants: str
+    checked: bool
+
+
+@router.post("/batch")
+async def batch_upload(data: list[ApplicationRow], session: SessionDep):
+    for entry in data:
+        org = session.exec(select(Org).where(Org.name == entry.org_name)).first()
+        if not org:
+            org = Org(name=entry.org_name)
+            session.add(org)
+            session.commit()
+            session.refresh(org)
+
+        for resource_id in [1, 2]:
+            req = Request(
+                org_id=org.id or 1,
+                resource_id=resource_id,
+                contact_person=entry.contact_person,
+                contact_email=entry.contact_email,
+                contact_phone=entry.contact_phone,
+                event=entry.event,
+                description=entry.description,
+                participants=entry.participants,
+                checked=entry.checked,
+            )
+
+            session.add(req)
+            session.commit()
+            session.refresh(req)
+
+            dates = []
+            if resource_id == 1:
+                dates = entry.alina_dates
+            else:
+                dates = entry.sivistys_dates
+
+            for d in dates:
+                date_obj = Date(request_id=req.id, date=d, allocated=False)
+                session.add(date_obj)
+
+        session.commit()
+
+        return {"status": "success"}

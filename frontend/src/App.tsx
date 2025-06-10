@@ -6,6 +6,7 @@ import { get_orgs } from "./api/orgs";
 
 import { ResourceList } from "./components/resources";
 import { OrgList } from "./components/orgs";
+import { BatchUpload } from "./components/batch";
 
 function App() {
     const [resources, setResources] = useState([]);
@@ -26,6 +27,7 @@ function App() {
             <h1>Alina</h1>
             <ResourceList resources={resources} />
             <OrgList orgs={orgs} />
+            <BatchUpload />
         </div>
     )
 }
