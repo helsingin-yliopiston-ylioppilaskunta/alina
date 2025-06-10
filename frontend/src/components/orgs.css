@@ -1,15 +1,15 @@
-.ResourceList {
+.OrgList .orgs {
     display: grid;
     grid-template-columns: auto;
     gap: var(--gap-s);
 }
 
-.ResourceList ul {
+.Orglist ul {
     list-style-type: none;
     padding: 0;
 }
 
-.Resource {
+.Org {
     text-align: left;
     border: var(--border) var(--color-05);
     border-radius: var(--radius);
@@ -24,13 +24,13 @@
     transition: var(--transition);
 }
 
-.Resource:hover {
+.Org:hover {
     background-color: var(--color-04);
     box-shadow: var(--shadow) var(--color-04);
     transition: var(--transition);
 }
 
-.Resource:active {
+.Org:active {
     border-color: var(--color-06);
     box-shadow: var(--shadow) var(--color-05);
     transition: var(--transition);
@@ -38,11 +38,11 @@
     text-shadow: var(--shadow) var(--color-07);
 }
 
-.Resource ul {
+.Org ul {
     list-style-type: none;
     padding: 0;
 }
 
-.Resource .name {
+.Org .name {
     font-weight: bold;
 }
