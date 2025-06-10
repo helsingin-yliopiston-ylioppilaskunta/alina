@@ -2,7 +2,7 @@ from fastapi import FastAPI
 from contextlib import asynccontextmanager
 
 from .dependencies import create_db_and_tables
-from .routers import orgs, resources
+from .routers import orgs, resources, requests, dates
 
 
 @asynccontextmanager
@@ -16,3 +16,5 @@ app = FastAPI(root_path="/api", lifespan=lifespan)
 
 app.include_router(orgs.router)
 app.include_router(resources.router)
+app.include_router(requests.router)
+app.include_router(dates.router)

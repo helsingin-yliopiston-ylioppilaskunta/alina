@@ -1,5 +1,3 @@
-<<<<<<< Updated upstream
-=======
 from fastapi import APIRouter, Depends, HTTPException
 
 from collections.abc import Sequence
@@ -9,6 +7,7 @@ from sqlmodel import Session, select
 from ..dependencies import get_session
 
 from app.models.request import Request, RequestPublic, RequestCreate, RequestUpdate
+
 from app.models.org import Org
 from app.models.date import Date
 
@@ -133,4 +132,3 @@ async def batch_upload(data: list[ApplicationRow], session: SessionDep):
         session.commit()
 
         return {"status": "success"}
->>>>>>> Stashed changes

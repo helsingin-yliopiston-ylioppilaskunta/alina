@@ -1,4 +1,9 @@
-from sqlmodel import Field, SQLModel
+from sqlmodel import Field, SQLModel, Relationship
+
+from typing import TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from app.models.request import Request
 
 
 class OrgBase(SQLModel):
@@ -7,6 +12,7 @@ class OrgBase(SQLModel):
 
 class Org(OrgBase, table=True):
     id: int | None = Field(default=None, primary_key=True)
+    requests: list["Request"] = Relationship(back_populates="org")
 
 
 class OrgPublic(OrgBase):
@@ -19,3 +25,7 @@ class OrgCreate(OrgBase):
 
 class OrgUpdate(OrgBase):
     pass
+
+
+# _ = Org.model_rebuild()
+# _ = OrgPublic.model_rebuild()
