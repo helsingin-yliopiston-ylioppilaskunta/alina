@@ -4,17 +4,36 @@
 
     display: grid;
     grid-template-columns: auto;
-    gap: 0.5em;
+    gap: var(--gap-s);
 }
 
 .Resource {
     text-align: left;
-    border: 2px solid #555;
-    border-radius: 5px;
+    border: var(--border) var(--color-05);
+    border-radius: var(--radius);
 
-    background-color: #444;
+    background-color: var(--color-03);
+    box-shadow:
+        var(--shadow) var(--color-03);
 
-    padding: 0.5em;
+    color: inherit;
+
+    padding: var(--gap-m);
+    transition: var(--transition);
+}
+
+.Resource:hover {
+    background-color: var(--color-04);
+    box-shadow: var(--shadow) var(--color-04);
+    transition: var(--transition);
+}
+
+.Resource:active {
+    border-color: var(--color-06);
+    box-shadow: var(--shadow) var(--color-05);
+    transition: var(--transition);
+    color: var(--color-13);
+    text-shadow: var(--shadow) var(--color-07);
 }
 
 .Resource ul {
