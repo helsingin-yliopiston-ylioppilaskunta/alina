@@ -4,7 +4,7 @@
 
     display: grid;
     grid-template-columns: auto;
-    gap: 0.5em;
+    gap: var(--gap-s);
 }
 
 .Resource {
@@ -18,7 +18,7 @@
 
     color: inherit;
 
-    padding: 1em;
+    padding: var(--gap-m);
     transition: var(--transition);
 }
 
