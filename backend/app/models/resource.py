@@ -1,4 +1,9 @@
-from sqlmodel import Field, SQLModel
+from sqlmodel import Field, SQLModel, Relationship
+
+from typing import TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from app.models.request import Request
 
 
 class ResourceBase(SQLModel):
@@ -8,6 +13,7 @@ class ResourceBase(SQLModel):
 
 class Resource(ResourceBase, table=True):
     id: int | None = Field(default=None, primary_key=True)
+    requests: list["Request"] = Relationship(back_populates="resource")
 
 
 class ResourcePublic(ResourceBase):
@@ -20,3 +26,7 @@ class ResourceCreate(ResourceBase):
 
 class ResourceUpdate(ResourceBase):
     pass
+
+
+# _ = Resource.model_rebuild()
+# _ = ResourcePublic.model_rebuild()
