@@ -2,7 +2,7 @@ from fastapi import FastAPI
 from contextlib import asynccontextmanager
 
 from .dependencies import create_db_and_tables
-from .routers import orgs
+from .routers import orgs, resources
 
 
 @asynccontextmanager
@@ -15,3 +15,4 @@ async def lifespan(_: FastAPI):
 app = FastAPI(root_path="/api", lifespan=lifespan)
 
 app.include_router(orgs.router)
+app.include_router(resources.router)
