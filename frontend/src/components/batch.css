@@ -1,0 +1,57 @@
+.BatchUpload {
+    display: grid;
+    gap: var(--gap-s);
+}
+
+.BatchUpload input.file {
+    text-align: left;
+    border: var(--border) var(--color-05);
+    border-radius: var(--radius);
+
+    background-color: var(--color-03);
+    box-shadow:
+        var(--shadow) var(--color-03);
+
+    color: inherit;
+
+    padding: var(--gap-m);
+
+    transition: var(--transition);
+}
+
+.BatchUpload input.upload,
+.BatchUpload input.file::file-selector-button {
+    text-align: left;
+    border: var(--border) var(--color-07);
+    border-radius: var(--radius);
+
+    text-align: center;
+    font-weight: bold;
+
+    background-color: var(--color-06);
+    box-shadow:
+        var(--shadow) var(--color-06);
+
+    color: inherit;
+
+    padding: var(--gap-m);
+    transition: var(--transition);
+}
+
+.BatchUpload input.upload:hover,
+.BatchUpload input.file::file-selector-button:hover {
+    background-color: var(--color-07);
+    box-shadow: var(--shadow) var(--color-07);
+    transition: var(--transition);
+}
+
+.BatchUpload input.upload:active,
+.BatchUpload input.file::file-selector-button:active {
+    border-color: var(--color-06);
+    box-shadow: var(--shadow) var(--color-06);
+    transition: var(--transition);
+    color: var(--color-13);
+    text-shadow: var(--shadow) var(--color-07);
+}
+
+}

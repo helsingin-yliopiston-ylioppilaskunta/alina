@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 
+import "./batch.css";
+
 function BatchUpload() {
     const [file, setFile] = useState<File | null>(null);
 
@@ -15,20 +17,8 @@ function BatchUpload() {
 
     return (
         <div className="BatchUpload">
-            <input type="file" onChange={handleFileChange} />
-            <div>
-                {file && (
-                    <section>
-                        File details:
-                        <ul>
-                            <li>Name: {file.name}</li>
-                            <li>Type: {file.type}</li>
-                            <li>Size: {file.size} bytes</li>
-                        </ul>
-                    </section>
-                )}
-            </div>
-            <input type="button" onClick={handleUpload} value="Upload" />
+            <input type="file" className="file" onChange={handleFileChange} />
+            <input type="button" className="upload" onClick={handleUpload} value="Upload" />
         </div>
     )
 }
