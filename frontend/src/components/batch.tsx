@@ -6,7 +6,7 @@ import type { APIRow } from './../schemas/BatchUpload';
 import "./batch.css";
 
 interface BatchUploadProps {
-    handleSubmit: (rows: APIRow[]) => undefined;
+    handleSubmit: (rows: APIRow[]) => void;
 }
 
 function BatchUpload(props: BatchUploadProps) {
@@ -29,7 +29,7 @@ function BatchUpload(props: BatchUploadProps) {
             complete: (results: Papa.ParseResult<string[]>) => {
                 const data = results.data.slice(1);
 
-                const formatted = data.map(row => {
+                const formatted = data.map((row: string[]) => {
                     return {
                         "org_name": row[0],
                         "contact_person": row[1],

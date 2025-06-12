@@ -9,7 +9,7 @@ import { ResourceList } from "./components/resources";
 import { OrgList } from "./components/orgs";
 import { BatchUpload } from "./components/batch";
 
-import type { APIRows } from "./schemas/BatchUpload";
+import type { APIRow } from "./schemas/BatchUpload";
 
 function App() {
     const [resources, setResources] = useState([]);
@@ -25,7 +25,7 @@ function App() {
             .catch(console.error);
     }, [])
 
-    function handleSubmit(rows: APIRows[]) {
+    function handleSubmit(rows: APIRow[]) {
         send_batch(rows)
             .then(console.log)
             .catch(console.error);
