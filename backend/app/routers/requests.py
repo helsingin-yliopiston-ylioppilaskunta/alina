@@ -133,4 +133,4 @@ async def batch_upload(data: list[ApplicationRow], session: SessionDep):
 
         session.commit()
 
-        return {"status": "success"}
+    return {"status": "success"}
