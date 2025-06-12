@@ -3,10 +3,13 @@ import './App.css';
 
 import { get_resources } from "./api/resources";
 import { get_orgs } from "./api/orgs";
+import { send_batch } from "./api/batch";
 
 import { ResourceList } from "./components/resources";
 import { OrgList } from "./components/orgs";
 import { BatchUpload } from "./components/batch";
+
+import type { APIRows } from "./schemas/BatchUpload";
 
 function App() {
     const [resources, setResources] = useState([]);
@@ -22,12 +25,18 @@ function App() {
             .catch(console.error);
     }, [])
 
+    function handleSubmit(rows: APIRows[]) {
+        send_batch(rows)
+            .then(console.log)
+            .catch(console.error);
+    }
+
     return (
         <div className="App">
             <h1>Alina</h1>
             <ResourceList resources={resources} />
             <OrgList orgs={orgs} />
-            <BatchUpload />
+            <BatchUpload handleSubmit={handleSubmit} />
         </div>
     )
 }
