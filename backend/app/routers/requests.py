@@ -115,6 +115,8 @@ async def batch_upload(data: list[ApplicationRow], session: SessionDep):
                 checked=entry.checked,
             )
 
+            print(entry.org_name)
+
             session.add(req)
             session.commit()
             session.refresh(req)
@@ -131,4 +133,4 @@ async def batch_upload(data: list[ApplicationRow], session: SessionDep):
 
         session.commit()
 
-        return {"status": "success"}
+    return {"status": "success"}

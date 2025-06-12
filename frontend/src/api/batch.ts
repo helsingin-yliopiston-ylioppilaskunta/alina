@@ -24,5 +24,7 @@ export async function send_batch(data: RowObject[]) {
         throw new Error("Failed to submit data");
     }
 
+    console.log(JSON.stringify(data));
+
     return res.json();
 }
