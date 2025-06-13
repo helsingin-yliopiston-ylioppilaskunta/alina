@@ -3,7 +3,7 @@ from sqlmodel import Field, SQLModel, Relationship
 from typing import TYPE_CHECKING, Optional
 
 if TYPE_CHECKING:
-    from app.models.request import Request
+    from app.models.request import Request, RequestPublic
 
 
 class DateBase(SQLModel):
@@ -19,7 +19,7 @@ class Date(DateBase, table=True):
 
 class DatePublic(DateBase):
     id: int
-    request: Optional["Request"]
+    request: Optional["RequestPublic"]
 
 
 class DateCreate(DateBase):
@@ -30,7 +30,7 @@ class DateUpdate(DateBase):
     pass
 
 
-from app.models.request import Request
+from app.models.request import Request, RequestPublic
 
 _ = Date.model_rebuild()
 _ = DatePublic.model_rebuild()
