@@ -99,8 +99,9 @@ async def batch_upload(data: list[ApplicationRow], session: SessionDep):
         if not org:
             org = Org(name=entry.org_name)
             session.add(org)
-            session.commit()
-            session.refresh(org)
+            # session.commit()
+            # session.refresh(org)
+            session.flush()
 
         for resource_id in [1, 2]:
             req = Request(
@@ -114,22 +115,19 @@ async def batch_upload(data: list[ApplicationRow], session: SessionDep):
                 participants=entry.participants,
                 checked=entry.checked,
             )
-
-            print(entry.org_name)
-
             session.add(req)
-            session.commit()
-            session.refresh(req)
+            session.flush()
 
-            dates = []
-            if resource_id == 1:
-                dates = entry.alina_dates
-            else:
-                dates = entry.sivistys_dates
+            # session.add(req)
+            # session.commit()
+            # session.refresh(req)
+
+            dates = entry.alina_dates if resource_id == 1 else entry.sivistys_dates
 
             for d in dates:
-                date_obj = Date(request_id=req.id, date=d, allocated=False)
-                session.add(date_obj)
+                if d:
+                    date_obj = Date(request_id=req.id, date=d, allocated=False)
+                    session.add(date_obj)
 
         session.commit()
 

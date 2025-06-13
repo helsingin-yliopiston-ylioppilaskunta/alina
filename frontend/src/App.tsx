@@ -4,16 +4,19 @@ import './App.css';
 import { get_resources } from "./api/resources";
 import { get_orgs } from "./api/orgs";
 import { send_batch } from "./api/batch";
+import { get_dates } from "./api/dates";
 
 import { ResourceList } from "./components/resources";
 import { OrgList } from "./components/orgs";
 import { BatchUpload } from "./components/batch";
+import { DateList } from "./components/dates";
 
 import type { APIRow } from "./schemas/BatchUpload";
 
 function App() {
     const [resources, setResources] = useState([]);
     const [orgs, setOrgs] = useState([]);
+    const [dates, setDates ] = useState([]);
 
     useEffect(() => {
         get_resources()
@@ -22,6 +25,10 @@ function App() {
 
         get_orgs()
             .then(setOrgs)
+            .catch(console.error);
+
+        get_dates()
+            .then(setDates)
             .catch(console.error);
     }, [])
 
@@ -37,6 +44,7 @@ function App() {
             <ResourceList resources={resources} />
             <OrgList orgs={orgs} />
             <BatchUpload handleSubmit={handleSubmit} />
+            <DateList dates={dates} />
         </div>
     )
 }
