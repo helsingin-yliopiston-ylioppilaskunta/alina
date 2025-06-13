@@ -1,0 +1,48 @@
+.DateList .dates {
+    display: grid;
+    grid-template-columns: auto;
+    gap: var(--gap-s);
+}
+
+.Datelist ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+.Date {
+    text-align: left;
+    border: var(--border) var(--color-05);
+    border-radius: var(--radius);
+
+    background-color: var(--color-03);
+    box-shadow:
+        var(--shadow) var(--color-03);
+
+    color: inherit;
+
+    padding: var(--gap-m);
+    transition: var(--transition);
+}
+
+.Date:hover {
+    background-color: var(--color-04);
+    box-shadow: var(--shadow) var(--color-04);
+    transition: var(--transition);
+}
+
+.Date:active {
+    border-color: var(--color-06);
+    box-shadow: var(--shadow) var(--color-05);
+    transition: var(--transition);
+    color: var(--color-13);
+    text-shadow: var(--shadow) var(--color-07);
+}
+
+.Date ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+.Date .name {
+    font-weight: bold;
+}
