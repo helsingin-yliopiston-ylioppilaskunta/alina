@@ -11,7 +11,7 @@ import { ResourceList } from "./components/resources";
 import { OrgList } from "./components/orgs";
 import { BatchUpload } from "./components/batch";
 import { DateList } from "./components/dates";
-import { OrgResourceDateList } from "./components/allocation";
+import { Allocate } from "./components/allocation";
 
 import type { APIRow } from "./schemas/BatchUpload";
 
@@ -49,7 +49,7 @@ function App() {
         <div className="App">
             <h1>Alina</h1>
             <ResourceList resources={resources} />
-            <OrgResourceDateList data={orgResourceDates} />
+            <Allocate orgResourceDates={orgResourceDates} />
             <OrgList orgs={orgs} />
             <BatchUpload handleSubmit={handleSubmit} />
             <DateList dates={dates} />

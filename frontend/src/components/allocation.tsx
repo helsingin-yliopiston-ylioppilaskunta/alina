@@ -79,7 +79,7 @@ interface OrgResourceDateListProps {
 function OrgResourceDateList(props: OrgResourceDateListProps) {
     return (
         <div className="OrgResourceDateList">
-            <h3>Requested dates</h3>
+            <h4>Requested dates</h4>
             <ul className="org-resource-dates">
                 {
                     props.data.map((item) => (
@@ -91,4 +91,22 @@ function OrgResourceDateList(props: OrgResourceDateListProps) {
     )
 }
 
-export { OrgResourceDate, OrgResourceDateList }
+interface AllocateProps {
+    orgResourceDates: OrgResourceDate[]
+}
+
+function Allocate(props: AllocateProps) {
+    function allocate() {
+        console.log("Allocating!");
+    }
+
+    return (
+        <div className="Allocate">
+            <h3>Allocations</h3>
+            <OrgResourceDateList data={props.orgResourceDates} />
+            <input type="button" value="allocate" onClick={allocate} />
+        </div>
+    )
+}
+
+export { Allocate }
