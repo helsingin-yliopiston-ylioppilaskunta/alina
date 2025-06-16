@@ -13,7 +13,7 @@ from typing import Annotated
 
 router = APIRouter(
     prefix="/resource-dates",
-    tags=["resource", "date"],
+    tags=["resource-dates"],
     dependencies=[Depends(get_session)],
 )
 
