@@ -5,6 +5,7 @@ import { get_resources } from "./api/resources";
 import { get_orgs } from "./api/orgs";
 import { send_batch } from "./api/batch";
 import { get_dates } from "./api/dates";
+import { get_org_resource_dates } from "./api/org_resource_dates";
 
 import { ResourceList } from "./components/resources";
 import { OrgList } from "./components/orgs";
@@ -17,6 +18,7 @@ function App() {
     const [resources, setResources] = useState([]);
     const [orgs, setOrgs] = useState([]);
     const [dates, setDates ] = useState([]);
+    const [orgResourceDates, setOrgResourceDates ] = useState([]);
 
     useEffect(() => {
         get_resources()
@@ -29,6 +31,10 @@ function App() {
 
         get_dates()
             .then(setDates)
+            .catch(console.error);
+
+        get_org_resource_dates(1)
+            .then(setOrgResourceDates)
             .catch(console.error);
     }, [])
 
