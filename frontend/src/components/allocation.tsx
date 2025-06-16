@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import "./allocation.css";
 
 interface Org {
@@ -58,8 +58,6 @@ function OrgResourceDate(props: OrgResourceDateProps) {
         ...Array(Math.max(0, 3 - props.data.dates.length)).fill(null)
     ];
 
-    console.log(props.reserved);
-
     return (
     <li key={props.data.org_id} className="OrgResourceDate">
         <ul>
@@ -87,7 +85,9 @@ function OrgResourceDateList(props: OrgResourceDateListProps) {
             <h4>Requested dates</h4>
             <ul className="org-resource-dates">
                 {
-                    props.data.map((item) => {
+                    [...props.data].sort((a, b) => {
+                        return a.org_name.localeCompare(b.org_name);
+                    }).map((item) => {
                         const matchingKey = Object.entries(props.reserved).find(
                             ([key, value]) => value.org_id === item.org_id
                         )?.[0];
@@ -106,10 +106,16 @@ interface AllocateProps {
 
 function Allocate(props: AllocateProps) {
     const [reservedDates, setReservedDates] = useState([]);
+    const [shuffledData, setShuffledData] = useState([]);
+
+    useEffect(() => {
+        setShuffledData(props.orgResourceDates);
+    }, [props.orgResourceDates])
 
     function allocate() {
+        shuffle();
         let reserved = {};
-        for (let org of props.orgResourceDates) {
+        for (let org of shuffledData) {
             for (let date of org.dates) {
                 if (!(date.date in reserved)) {
                     reserved[date.date] = org
@@ -119,11 +125,21 @@ function Allocate(props: AllocateProps) {
 
         setReservedDates(reserved);
     }
+    
+    function shuffle() {
+        const copy = [...shuffledData];
+        for (let i = copy.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [copy[i], copy[j]] = [copy[j], copy[i]];
+        }
+
+        setShuffledData(copy);
+    }
 
     return (
         <div className="Allocate">
             <h3>Allocations</h3>
-            <OrgResourceDateList data={props.orgResourceDates} reserved={reservedDates} />
+            <OrgResourceDateList data={shuffledData} reserved={reservedDates} />
             <input type="button" value="allocate" onClick={allocate} />
         </div>
     )
