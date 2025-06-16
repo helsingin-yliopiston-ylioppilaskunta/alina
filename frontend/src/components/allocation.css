@@ -1,0 +1,56 @@
+.OrgResourceDateList .org-resource-dates {
+    display: grid;
+    grid-template-columns: repeat(4, auto);
+    gap: var(--gap-s);
+}
+
+.OrgResourceDatelist ul {
+    list-style-type: none;
+    padding: 0;
+
+}
+
+.OrgResourceDate {
+    display: contents;
+}
+
+.OrgResourceDate:hover {
+    background-color: var(--color-04);
+    box-shadow: var(--shadow) var(--color-04);
+    transition: var(--transition);
+}
+
+.OrgResourceDate:active {
+    border-color: var(--color-06);
+    box-shadow: var(--shadow) var(--color-05);
+    transition: var(--transition);
+    color: var(--color-13);
+    text-shadow: var(--shadow) var(--color-07);
+}
+
+.OrgResourceDate ul {
+    list-style-type: none;
+    padding: 0;
+
+    display: contents;
+}
+
+.OrgResourceDate .name {
+    font-weight: bold;
+}
+
+.OrgResourceDate li {
+    text-align: left;
+    border: var(--border) var(--color-05);
+    border-radius: var(--radius);
+
+    background-color: var(--color-03);
+    box-shadow:
+        var(--shadow) var(--color-03);
+
+    color: inherit;
+
+    padding: var(--gap-m);
+    transition: var(--transition);
+
+}
