@@ -54,3 +54,8 @@
     transition: var(--transition);
 
 }
+
+.OrgResourceDate li.date:empty {
+    background-color: var(--color-02);
+    border-color: var(--color-04);
+}
