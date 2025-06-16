@@ -57,10 +57,14 @@
 
     padding: var(--gap-m);
     transition: var(--transition);
-
 }
 
 .OrgResourceDate li.date:empty {
     background-color: var(--color-02);
     border-color: var(--color-04);
+}
+
+.OrgResourceDate li.reserved {
+    background-color: var(--color-05);
+    border-color: var(--color-07);
 }
