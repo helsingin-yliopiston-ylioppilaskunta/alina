@@ -4,7 +4,7 @@ import './App.css';
 import { get_resources } from "./api/resources";
 import { get_orgs } from "./api/orgs";
 import { send_batch } from "./api/batch";
-import { get_dates } from "./api/dates";
+import { get_dates, patch_dates } from "./api/dates";
 import { get_org_resource_dates } from "./api/org_resource_dates";
 
 import { ResourceList } from "./components/resources";
@@ -65,7 +65,10 @@ function App() {
         <div className="App">
             <h1>Alina</h1>
             <ResourceList resources={resources} selected={selectedResource ? selectedResource : 0} handleSelect={handleSelect} />
-            <Allocate orgResourceDates={orgResourceDates} />
+            <Allocate
+                orgResourceDates={orgResourceDates}
+                onSubmit={patch_dates}
+            />
             <OrgList orgs={orgs} />
             <BatchUpload handleSubmit={handleSubmit} />
             <DateList dates={dates} />

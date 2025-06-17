@@ -134,6 +134,7 @@ function OrgResourceDateList(props: OrgResourceDateListProps) {
 
 interface AllocateProps {
     orgResourceDates: OrgResourceDate[]
+    onSubmit: (dates: Date[]) => Promise<void>
 }
 
 function Allocate(props: AllocateProps) {
@@ -206,6 +207,16 @@ function Allocate(props: AllocateProps) {
         setSkippedOrgs(newSkipped);
     }
 
+    function collectAllocatedDates(): Date[] {
+        const allocations = Object.entries(reservedDates);
+        return allocations.flatMap(([dateStr, org]) => {
+            const match = org.dates.find(d => d.date === dateStr);
+            return match
+                ? [{ ...match, allocated: true }]
+                : [];
+        })
+    }
+
     return (
         <div className="Allocate">
             <h3>Allocations</h3>
@@ -226,6 +237,7 @@ function Allocate(props: AllocateProps) {
                 </ul>
             )}
             <input type="button" value="Allocate" className="allocate" onClick={allocate} />
+            <input type="button" value="Submit" className="submit" onClick={props.onSubmit(collectAllocatedDates())} />
         </div>
     )
 }

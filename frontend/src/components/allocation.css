@@ -80,7 +80,8 @@
     border-color: var(--color-08);
 }
 
-.Allocate input.allocate {
+.Allocate input.allocate,
+.Allocate input.submit {
     text-align: left;
     border: var(--border) var(--color-07);
     border-radius: var(--radius);
@@ -96,6 +97,8 @@
 
     padding: var(--gap-m);
     transition: var(--transition);
+
+    margin-right: var(--gap-m);
 }
 
 .Allocate input.allocate:hover {
