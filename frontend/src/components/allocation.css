@@ -59,6 +59,12 @@
     transition: var(--transition);
 }
 
+.OrgResourceDate.skipped li {
+    background-color: var(--color-02);
+    border-color: var(--color-03);
+    color: var(--color-07);
+}
+
 .OrgResourceDate li.date:empty {
     background-color: var(--color-02);
     border-color: var(--color-04);
