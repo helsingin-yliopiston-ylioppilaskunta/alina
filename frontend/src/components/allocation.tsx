@@ -76,7 +76,7 @@ function OrgResourceDate(props: OrgResourceDateProps) {
 
 interface OrgResourceDateListProps {
     data: OrgResourceDate[],
-    reserved: any[],
+    reserved: Record<string, OrgResourceDate>,
 }
 
 function OrgResourceDateList(props: OrgResourceDateListProps) {
@@ -89,10 +89,10 @@ function OrgResourceDateList(props: OrgResourceDateListProps) {
                         return a.org_name.localeCompare(b.org_name);
                     }).map((item) => {
                         const matchingKey = Object.entries(props.reserved).find(
-                            ([key, value]) => value.org_id === item.org_id
+                            ([_, value]) => value.org_id === item.org_id
                         )?.[0];
 
-                        return <OrgResourceDate data={item} reserved={matchingKey} />;
+                        return <OrgResourceDate data={item} reserved={matchingKey ? matchingKey : ""} />;
                     })
                 }
             </ul>
@@ -105,25 +105,34 @@ interface AllocateProps {
 }
 
 function Allocate(props: AllocateProps) {
-    const [reservedDates, setReservedDates] = useState([]);
-    const [shuffledData, setShuffledData] = useState([]);
+    const [reservedDates, setReservedDates] = useState<Record<string, OrgResourceDate>>({});
+    const [shuffledData, setShuffledData] = useState<OrgResourceDate[]>([]);
+    const [missingOrgs, setMissingOrgs] = useState<string[]>([]);
 
     useEffect(() => {
         setShuffledData(props.orgResourceDates);
-        setReservedDates([]);
+        setReservedDates({});
+        setMissingOrgs([])
     }, [props.orgResourceDates])
 
     function allocate() {
         shuffle();
-        let reserved = {};
-        for (let org of shuffledData) {
-            for (let date of org.dates) {
+
+        const reserved: Record<string, OrgResourceDate> = {};
+        const gotDate = new Set<number>();
+
+        for (const org of shuffledData) {
+            for (const date of org.dates) {
                 if (!(date.date in reserved)) {
-                    reserved[date.date] = org
+                    reserved[date.date] = org;
+                    gotDate.add(org.org_id);
+                    break;
                 }
             }
         }
 
+        const missing = shuffledData.filter(org => !gotDate.has(org.org_id));
+        setMissingOrgs(missing.map(org => org.org_name));
         setReservedDates(reserved);
     }
 
@@ -141,7 +150,15 @@ function Allocate(props: AllocateProps) {
         <div className="Allocate">
             <h3>Allocations</h3>
             <OrgResourceDateList data={shuffledData} reserved={reservedDates} />
-            <input type="button" value="allocate" onClick={allocate} />
+            <p>Orgs without a date: {missingOrgs.length}</p>
+            {missingOrgs.length > 0 && (
+                <ul className="missing">
+                    {missingOrgs.map((name, idx) => (
+                        <li key={idx}>{name}</li>
+                    ))}
+                </ul>
+            )}
+            <input type="button" value="Allocate" onClick={allocate} />
         </div>
     )
 }
