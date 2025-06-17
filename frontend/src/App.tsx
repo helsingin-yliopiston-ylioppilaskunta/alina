@@ -34,9 +34,9 @@ function App() {
             .then(setDates)
             .catch(console.error);
 
-        get_org_resource_dates(1)
-            .then(setOrgResourceDates)
-            .catch(console.error);
+        // get_org_resource_dates(1)
+        //     .then(setOrgResourceDates)
+        //     .catch(console.error);
     }, [])
 
     function handleSubmit(rows: APIRow[]) {
@@ -45,9 +45,13 @@ function App() {
             .catch(console.error);
     }
 
-    const [selectedResource, selectResource] = useState<number>(1);
+    const [selectedResource, selectResource] = useState<number | undefined>();
 
     useEffect(() => {
+        if (!selectedResource) {
+            return;
+        }
+
         get_org_resource_dates(selectedResource)
             .then(setOrgResourceDates)
             .catch(console.error);
@@ -60,7 +64,7 @@ function App() {
     return (
         <div className="App">
             <h1>Alina</h1>
-            <ResourceList resources={resources} selected={selectedResource} handleSelect={handleSelect} />
+            <ResourceList resources={resources} selected={selectedResource ? selectedResource : 0} handleSelect={handleSelect} />
             <Allocate orgResourceDates={orgResourceDates} />
             <OrgList orgs={orgs} />
             <BatchUpload handleSubmit={handleSubmit} />
