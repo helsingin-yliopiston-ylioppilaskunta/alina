@@ -38,6 +38,11 @@
     text-shadow: var(--shadow) var(--color-07);
 }
 
+.Resource.selected {
+    background-color: var(--color-05);
+}
+
+
 .Resource ul {
     list-style-type: none;
     padding: 0;

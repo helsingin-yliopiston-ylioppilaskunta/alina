@@ -18,8 +18,8 @@ import type { APIRow } from "./schemas/BatchUpload";
 function App() {
     const [resources, setResources] = useState([]);
     const [orgs, setOrgs] = useState([]);
-    const [dates, setDates ] = useState([]);
-    const [orgResourceDates, setOrgResourceDates ] = useState([]);
+    const [dates, setDates] = useState([]);
+    const [orgResourceDates, setOrgResourceDates] = useState([]);
 
     useEffect(() => {
         get_resources()
@@ -45,10 +45,22 @@ function App() {
             .catch(console.error);
     }
 
+    const [selectedResource, selectResource] = useState<number>(1);
+
+    useEffect(() => {
+        get_org_resource_dates(selectedResource)
+            .then(setOrgResourceDates)
+            .catch(console.error);
+    }, [selectedResource])
+
+    function handleSelect(id: number) {
+        selectResource(id);
+    }
+
     return (
         <div className="App">
             <h1>Alina</h1>
-            <ResourceList resources={resources} />
+            <ResourceList resources={resources} selected={selectedResource} handleSelect={handleSelect} />
             <Allocate orgResourceDates={orgResourceDates} />
             <OrgList orgs={orgs} />
             <BatchUpload handleSubmit={handleSubmit} />
