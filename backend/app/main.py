@@ -2,7 +2,7 @@ from fastapi import FastAPI
 from contextlib import asynccontextmanager
 
 from .dependencies import create_db_and_tables
-from .routers import orgs, resources, requests, dates, cleanup
+from .routers import orgs, resources, requests, dates, cleanup, resource_dates
 
 
 @asynccontextmanager
@@ -19,3 +19,4 @@ app.include_router(resources.router)
 app.include_router(requests.router)
 app.include_router(dates.router)
 app.include_router(cleanup.router)
+app.include_router(resource_dates.router)
