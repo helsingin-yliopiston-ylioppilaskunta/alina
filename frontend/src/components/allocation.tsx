@@ -59,9 +59,9 @@ function OrgResourceDate(props: OrgResourceDateProps) {
     ];
 
     return (
-    <li key={props.data.org_id} className="OrgResourceDate">
-        <ul>
-            <li className="name">{props.data.org_name}</li>
+        <li key={props.data.org_id} className="OrgResourceDate">
+            <ul>
+                <li className="name">{props.data.org_name}</li>
                 {
                     paddedDates.map((date, index) => (
                         <li key={index} className={`date ${date && props.reserved === date.date ? "reserved" : ""}`}>
@@ -69,8 +69,8 @@ function OrgResourceDate(props: OrgResourceDateProps) {
                         </li>
                     ))
                 }
-        </ul>
-    </li>
+            </ul>
+        </li>
     )
 }
 
@@ -110,6 +110,7 @@ function Allocate(props: AllocateProps) {
 
     useEffect(() => {
         setShuffledData(props.orgResourceDates);
+        setReservedDates([]);
     }, [props.orgResourceDates])
 
     function allocate() {
@@ -125,7 +126,7 @@ function Allocate(props: AllocateProps) {
 
         setReservedDates(reserved);
     }
-    
+
     function shuffle() {
         const copy = [...shuffledData];
         for (let i = copy.length - 1; i > 0; i--) {
