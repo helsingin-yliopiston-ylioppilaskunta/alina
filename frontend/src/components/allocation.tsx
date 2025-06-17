@@ -158,7 +158,7 @@ function Allocate(props: AllocateProps) {
                     ))}
                 </ul>
             )}
-            <input type="button" value="Allocate" onClick={allocate} />
+            <input type="button" value="Allocate" className="allocate" onClick={allocate} />
         </div>
     )
 }

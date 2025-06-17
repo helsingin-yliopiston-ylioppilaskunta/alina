@@ -68,3 +68,35 @@
     background-color: var(--color-05);
     border-color: var(--color-07);
 }
+
+.Allocate input.allocate {
+    text-align: left;
+    border: var(--border) var(--color-07);
+    border-radius: var(--radius);
+
+    text-align: center;
+    font-weight: bold;
+
+    background-color: var(--color-06);
+    box-shadow:
+        var(--shadow) var(--color-06);
+
+    color: inherit;
+
+    padding: var(--gap-m);
+    transition: var(--transition);
+}
+
+.Allocate input.allocate:hover {
+    background-color: var(--color-07);
+    box-shadow: var(--shadow) var(--color-07);
+    transition: var(--transition);
+}
+
+.Allocate input.allocate:active {
+    border-color: var(--color-06);
+    box-shadow: var(--shadow) var(--color-06);
+    transition: var(--transition);
+    color: var(--color-13);
+    text-shadow: var(--shadow) var(--color-07);
+}
