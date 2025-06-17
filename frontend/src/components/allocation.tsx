@@ -46,9 +46,11 @@ interface OrgResourceDate {
 
 interface OrgResourceDateProps {
     data: OrgResourceDate,
-    reserved: string,
+    reserved: string
     skipped: boolean
     toggleSkipped: (id: number) => void
+    manualAllocate: (dateStr: string, org: OrgResourceDate) => void
+    manualAllocationMap: Record<string, OrgResourceDate>;
 }
 
 
@@ -65,12 +67,24 @@ function OrgResourceDate(props: OrgResourceDateProps) {
     }
 
     return (
-        <li key={props.data.org_id} className={`OrgResourceDate ${props.skipped ? "skipped" : ""}`}>
+        <li
+            key={props.data.org_id}
+            className={`OrgResourceDate ${props.skipped ? "skipped" : ""}`}
+        >
             <ul>
                 <li className="name" onClick={handleClick}>{props.data.org_name}</li>
                 {
                     paddedDates.map((date, index) => (
-                        <li key={index} className={`date ${date && props.reserved === date.date ? "reserved" : ""}`}>
+                        <li
+                            key={index}
+                            className={`date
+                                ${date && props.reserved === date.date ? "reserved" : ""}
+                                ${date && props.manualAllocationMap?.[date.date]?.org_id === props.data.org_id ? "manual" : ""}
+                            `}
+                            onClick={() => {
+                                if (date) props.manualAllocate(date.date, props.data);
+                            }}
+                        >
                             {date ? date.date : ""}
                         </li>
                     ))
@@ -85,12 +99,11 @@ interface OrgResourceDateListProps {
     reserved: Record<string, OrgResourceDate>,
     skipped: number[]
     toggleSkipped: (id: number) => void
+    manualAllocate: (dateStr: string, org: OrgResourceDate) => void
+    manualAllocationMap: Record<string, OrgResourceDate>
 }
 
 function OrgResourceDateList(props: OrgResourceDateListProps) {
-    function toggleSkipped(id: number) {
-        props.toggleSkipped(id);
-    }
     return (
         <div className="OrgResourceDateList">
             <h4>Requested dates</h4>
@@ -109,6 +122,8 @@ function OrgResourceDateList(props: OrgResourceDateListProps) {
                                 reserved={matchingKey ?? ""}
                                 skipped={props.skipped.includes(item.org_id)}
                                 toggleSkipped={props.toggleSkipped}
+                                manualAllocate={props.manualAllocate}
+                                manualAllocationMap={props.manualAllocationMap}
                             />
                         );
                     })}
@@ -126,29 +141,43 @@ function Allocate(props: AllocateProps) {
     const [shuffledData, setShuffledData] = useState<OrgResourceDate[]>([]);
     const [missingOrgs, setMissingOrgs] = useState<string[]>([]);
     const [skippedOrgs, setSkippedOrgs] = useState<number[]>([]);
+    const [manualAllocations, setManualAllocations] = useState<Record<string, OrgResourceDate>>({});
 
     useEffect(() => {
         setShuffledData(props.orgResourceDates);
         setReservedDates({});
-        setMissingOrgs([])
-        setSkippedOrgs([])
+        setMissingOrgs([]);
+        setSkippedOrgs([]);
+        setManualAllocations({});
     }, [props.orgResourceDates])
+
+    function manualAllocate(dateStr: string, org: OrgResourceDate) {
+        if (manualAllocations[dateStr]) return;
+        if (Object.values(manualAllocations).some(o => o.org_id === org.org_id)) return;
+
+        setManualAllocations(prev => ({
+            ...prev,
+            [dateStr]: org
+        }));
+    }
 
     function allocate() {
         shuffle();
 
-        const reserved: Record<string, OrgResourceDate> = {};
-        const gotDate = new Set<number>();
+        const reserved: Record<string, OrgResourceDate> = { ...manualAllocations };
+        const gotDate = new Set<number>(Object.values(manualAllocations).map(o => o.org_id));
 
         for (const org of shuffledData) {
-            if (!(skippedOrgs.includes(org.org_id)))
-                for (const date of org.dates) {
-                    if (!(date.date in reserved)) {
-                        reserved[date.date] = org;
-                        gotDate.add(org.org_id);
-                        break;
-                    }
+            if (gotDate.has(org.org_id)) continue;
+            if (skippedOrgs.includes(org.org_id)) continue;
+
+            for (const date of org.dates) {
+                if (!(date.date in reserved)) {
+                    reserved[date.date] = org;
+                    gotDate.add(org.org_id);
+                    break;
                 }
+            }
         }
 
         const missing = shuffledData.filter(org => !gotDate.has(org.org_id));
@@ -185,6 +214,8 @@ function Allocate(props: AllocateProps) {
                 reserved={reservedDates}
                 skipped={skippedOrgs}
                 toggleSkipped={toggleSkipped}
+                manualAllocate={manualAllocate}
+                manualAllocationMap={manualAllocations}
             />
             <p>Orgs without a date: {missingOrgs.length}</p>
             {missingOrgs.length > 0 && (

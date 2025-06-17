@@ -75,6 +75,11 @@
     border-color: var(--color-07);
 }
 
+.OrgResourceDate li.manual {
+    background-color: var(--color-06);
+    border-color: var(--color-08);
+}
+
 .Allocate input.allocate {
     text-align: left;
     border: var(--border) var(--color-07);
