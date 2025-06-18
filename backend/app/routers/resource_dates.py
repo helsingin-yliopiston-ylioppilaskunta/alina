@@ -47,7 +47,7 @@ async def get_orgs_with_dates_for_resource(resource_id: int, session: SessionDep
                         request_id=date.request_id,
                         date=date.date,
                         allocated=date.allocated,
-                        request=None,
+                        request=date.request,
                     )
                     for date in request.dates
                 ],
