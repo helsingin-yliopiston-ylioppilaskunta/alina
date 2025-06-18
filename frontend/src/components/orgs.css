@@ -1,18 +1,19 @@
 .OrgList .orgs {
     display: grid;
-    grid-template-columns: auto;
-    gap: var(--gap-s);
+    font-size: 0.8rem;
+    grid-template-columns: 10rem repeat(4, 8rem) auto repeat(2, 8rem);
+    /* gap: var(--gap-s); */
 }
 
-.Orglist ul {
-    list-style-type: none;
-    padding: 0;
+.OrgList .orgs .Org,
+.OrgList .orgs .row {
+    display: contents;
 }
 
-.Org {
+
+.OrgList .row li {
     text-align: left;
     border: var(--border) var(--color-05);
-    border-radius: var(--radius);
 
     background-color: var(--color-03);
     box-shadow:
@@ -20,29 +21,17 @@
 
     color: inherit;
 
-    padding: var(--gap-m);
+    padding: var(--gap-s);
     transition: var(--transition);
 }
 
-.Org:hover {
+.OrgList .row:hover li {
     background-color: var(--color-04);
     box-shadow: var(--shadow) var(--color-04);
     transition: var(--transition);
 }
 
-.Org:active {
-    border-color: var(--color-06);
-    box-shadow: var(--shadow) var(--color-05);
-    transition: var(--transition);
-    color: var(--color-13);
-    text-shadow: var(--shadow) var(--color-07);
-}
-
-.Org ul {
+.Orglist ul {
     list-style-type: none;
     padding: 0;
-}
-
-.Org .name {
-    font-weight: bold;
 }
