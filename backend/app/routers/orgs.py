@@ -1,11 +1,15 @@
 from fastapi import APIRouter, Depends, HTTPException
 
 from collections.abc import Sequence
-from sqlmodel import Session, select
+from sqlmodel import Session, select, SQLModel
+from sqlalchemy.sql import func
+from sqlalchemy.orm import aliased
 
 from ..dependencies import get_session
 
 from app.models.org import Org, OrgPublic, OrgCreate, OrgUpdate
+from app.models.date import Date, DatePublic
+from app.models.request import Request, RequestPublic
 
 from typing import Annotated
 
@@ -73,3 +77,41 @@ async def delete_org(org_id: int, session: SessionDep):
     session.commit()
 
     return {"ok", True}
+
+class OrgAllocation(SQLModel):
+    org: OrgPublic
+    date: DatePublic | None
+
+@router.get("/with-allocations/{resource_id}", response_model=list[OrgAllocation])
+async def get_orgs_with_allocations(resource_id: int, session: SessionDep):
+    DateAlias = aliased(Date)
+
+    subquery = (
+        select(func.min(DateAlias.id))
+        .join(Request, DateAlias.request_id == Request.id)
+        .where(
+            Request.org_id == Org.id,
+            Request.resource_id == resource_id,
+            DateAlias.allocated == True
+        )
+        .correlate(Org)
+        .scalar_subquery()
+    )
+
+    query = (
+        select(Org, Date)
+        .outerjoin(Date, Date.id == subquery)
+        .join(Request)
+        .where(Request.resource_id == resource_id)
+        .group_by(Org.id, Date.id)
+    )
+
+    rows = session.exec(query).all()
+
+    return [
+        OrgAllocation(
+            org=OrgPublic.model_validate(org),
+            date=DatePublic.model_validate(date) if date else None
+        )
+        for (org, date) in rows
+    ]

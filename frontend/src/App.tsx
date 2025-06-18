@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import './App.css';
 
 import { get_resources } from "./api/resources";
-import { get_orgs } from "./api/orgs";
+import { get_orgs, get_orgs_with_allocations } from "./api/orgs";
 import { send_batch } from "./api/batch";
 import { get_dates, patch_dates } from "./api/dates";
 import { get_org_resource_dates } from "./api/org_resource_dates";
@@ -26,9 +26,9 @@ function App() {
             .then(setResources)
             .catch(console.error);
 
-        get_orgs()
-            .then(setOrgs)
-            .catch(console.error);
+        // get_orgs()
+        //     .then(setOrgs)
+        //     .catch(console.error);
 
         get_dates()
             .then(setDates)
@@ -55,6 +55,11 @@ function App() {
         get_org_resource_dates(selectedResource)
             .then(setOrgResourceDates)
             .catch(console.error);
+
+        get_orgs_with_allocations(selectedResource)
+            .then(setOrgs)
+            .catch(console.error);
+
     }, [selectedResource])
 
     function handleSelect(id: number) {
