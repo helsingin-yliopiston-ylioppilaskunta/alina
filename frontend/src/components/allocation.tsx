@@ -73,6 +73,8 @@ function OrgResourceDate(props: OrgResourceDateProps) {
         >
             <ul>
                 <li className="name" onClick={handleClick}>{props.data.org_name}</li>
+                <li className="event">{props.data.dates[0].request.event}</li>
+                <li className="description">{props.data.dates[0].request.description}</li>
                 {
                     paddedDates.map((date, index) => (
                         <li
