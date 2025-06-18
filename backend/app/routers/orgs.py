@@ -1,11 +1,14 @@
 from fastapi import APIRouter, Depends, HTTPException
 
 from collections.abc import Sequence
-from sqlmodel import Session, select
+from sqlmodel import Session, select, SQLModel
+from sqlalchemy.sql import func
 
 from ..dependencies import get_session
 
 from app.models.org import Org, OrgPublic, OrgCreate, OrgUpdate
+from app.models.date import Date, DatePublic
+from app.models.request import Request, RequestPublic
 
 from typing import Annotated
 
@@ -73,3 +76,28 @@ async def delete_org(org_id: int, session: SessionDep):
     session.commit()
 
     return {"ok", True}
+
+class OrgAllocation(SQLModel):
+    org_id: int
+    org_name: str
+    date_id: int | None
+    date: str | None
+
+@router.get("/with-allocations/{resource_id}", response_model=list[OrgAllocation])
+async def get_orgs_with_allocations(resource_id: int, session: SessionDep):
+    query = (
+        select(
+            Org.id.label("org_id"),
+            Org.name.label("org_name"),
+            func.min(Date.id).label("date_id"),
+            func.min(Date.date).label("date")
+        )
+        .select_from(Org)
+        .join(Request)
+        .outerjoin(Date)
+        .where(Date.allocated == True, Request.resource_id == resource_id)
+        .group_by(Org.id, Org.name)
+    )
+
+    results = session.exec(query).all()
+    return results
